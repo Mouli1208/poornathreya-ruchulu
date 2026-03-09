@@ -1,81 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Poornathreya Ruchulu – Order</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
     body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#fbe7c6 0,#faf5ed 38%,#f3e6d5 100%);
-      color:#3b2a1a;
-      padding:16px;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#f3f0e8;
+      font-family:"Noto Sans Telugu","Noto Serif","Georgia",serif;
     }
     .app{
-      max-width:980px;
-      margin:0 auto;
-      background:#fff;
-      border-radius:16px;
-      box-shadow:0 20px 40px rgba(0,0,0,0.12);
-      padding:22px 18px 26px;
-      border:1px solid #f0d3a5;
+      max-width:1040px;
+      width:100%;
+      margin:16px;
+      background:#fbf7ee;
+      border-radius:18px;
+      box-shadow:0 18px 36px rgba(0,0,0,0.18);
+      border:1px solid #e1cfb0;
+      background-image:
+        radial-gradient(circle at top,#fbeedc 0,#fbf7ee 38%,#f3e7d6 100%);
+      padding:22px 20px 24px;
+      position:relative;
+      overflow:hidden;
     }
+    .leaf-left,.leaf-right{
+      position:absolute;
+      top:14px;
+      width:88px;
+      opacity:0.95;
+      pointer-events:none;
+    }
+    .leaf-left{left:12px;}
+    .leaf-right{right:12px;}
     header{
       text-align:center;
-      margin-bottom:18px;
+      margin-bottom:12px;
       position:relative;
     }
-    header::before,
-    header::after{
-      content:"";
-      position:absolute;
-      top:50%;
-      width:18%;
-      height:1px;
-      background:linear-gradient(to right,transparent,#e0b979);
-    }
-    header::before{left:0;}
-    header::after{
-      right:0;
-      background:linear-gradient(to left,transparent,#e0b979);
-    }
-    header img.logo{
-      max-width:130px;
-      border-radius:50%;
-      border:3px solid #f0d3a5;
-      background:#fff;
-      padding:4px;
-      display:block;
-      margin:0 auto 8px;
-    }
-    h1{
+    header h1{
       font-family:"Georgia","Times New Roman",serif;
-      font-size:26px;
-      color:#7b2f2f;
-      margin-bottom:4px;
+      font-size:32px;
+      color:#7b3a1f;
+      letter-spacing:1px;
+      margin-top:18px;
     }
-    .tagline{
-      font-size:14px;
-      color:#6a4c32;
-      margin-bottom:4px;
+    .logo-block{
+      margin-top:4px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
     }
-    .subtag{
-      font-size:11px;
-      letter-spacing:2px;
-      color:#b58b50;
+    .logo-round{
+      width:84px;
+      height:84px;
+      border-radius:50%;
+      border:3px solid #efcfaa;
+      background:#fff;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+    }
+    .logo-round img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .brand-text{
+      font-size:10px;
+      letter-spacing:1.5px;
       text-transform:uppercase;
+      color:#a06b3a;
     }
     .layout{
       display:flex;
       flex-wrap:wrap;
-      gap:18px;
-      margin-top:16px;
+      gap:16px;
+      margin-top:10px;
     }
-    .products{
-      flex:2 1 320px;
-      padding-right:4px;
-      border-right:1px dashed #f0d3a5;
+    .menu-section{
+      flex:2 1 360px;
+      padding-right:10px;
+      border-right:2px solid #37251a;
     }
     .cart{
       flex:1 1 260px;
@@ -85,96 +97,110 @@
       border:1px solid #f0d3a5;
       max-height:560px;
       overflow:auto;
-      position:relative;
     }
-    .cart h3{
-      font-size:16px;
-      margin-bottom:6px;
-      color:#7b2f2f;
-    }
-    h2{
-      font-size:18px;
-      margin:10px 0;
-      color:#7b2f2f;
-      border-bottom:2px solid #f0d3a5;
-      padding-bottom:4px;
+    .top-pics{
+      width:100%;
       display:flex;
-      align-items:center;
       justify-content:space-between;
+      align-items:flex-end;
+      margin-top:8px;
+      margin-bottom:4px;
     }
-    h2 span{
-      font-size:12px;
-      color:#c19455;
-      font-weight:500;
-    }
-    .category{margin-bottom:16px;}
-    .item{
+    .circle-pic{
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid #efcfaa;
+      background:#fff;
       display:flex;
+      justify-content:center;
       align-items:center;
+    }
+    .circle-pic img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .columns{
+      margin-top:4px;
+      display:grid;
+      grid-template-columns:1.1fr 1.1fr;
+      gap:10px;
+    }
+    .section-block{
+      padding:4px 6px;
+    }
+    .section-title{
+      font-size:22px;
+      font-weight:700;
+      color:#0d7b3a;
+      margin-bottom:4px;
+    }
+    .section-title.pachallu{text-align:right;}
+    .section-title.podulu{text-align:center;}
+    .item-row{
+      display:flex;
       justify-content:space-between;
-      padding:6px 0;
-      border-bottom:1px dotted #ebdfcc;
+      align-items:flex-start;
       font-size:14px;
-      gap:8px;
-    }
-    .item-main{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-    .item-name{
-      font-weight:500;
-    }
-    .item-controls{
-      display:flex;
-      align-items:center;
+      color:#5b3a24;
+      margin:3px 0;
       gap:6px;
     }
+    .item-name{
+      max-width:68%;
+    }
+    .item-right{
+      min-width:110px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:2px;
+    }
     .item-price{
-      width:86px;
-      text-align:right;
-      color:#7b2f2f;
+      color:#5a2e1c;
       font-weight:600;
-      margin:0 4px;
       font-size:13px;
+    }
+    .size-select{
+      padding:2px 4px;
+      font-size:11px;
+      border-radius:6px;
+      border:1px solid #d8c0a1;
+      background:#fff;
     }
     .qty-controls{
       display:flex;
       align-items:center;
-      gap:4px;
+      gap:3px;
+      font-size:12px;
     }
     .qty-controls button{
-      width:24px;
-      height:24px;
+      width:20px;
+      height:20px;
       border-radius:50%;
       border:none;
       background:#7b2f2f;
       color:#fff;
       cursor:pointer;
-      font-size:16px;
+      font-size:14px;
       line-height:1;
       box-shadow:0 2px 4px rgba(0,0,0,0.2);
     }
     .qty-controls span{
-      min-width:18px;
+      min-width:16px;
       text-align:center;
-    }
-    .size-select{
-      padding:4px 6px;
-      font-size:12px;
-      border-radius:6px;
-      border:1px solid #d8c0a1;
-      background:#fff;
     }
     .best-seller-badge{
       display:inline-block;
-      margin-left:6px;
-      padding:2px 6px;
+      margin-left:4px;
+      padding:1px 5px;
       border-radius:999px;
       background:#f9e1a5;
       color:#7b2f2f;
-      font-size:10px;
+      font-size:9px;
       font-weight:600;
       text-transform:uppercase;
       letter-spacing:0.5px;
@@ -184,6 +210,36 @@
       color:#6a4c32;
       margin-top:6px;
       font-style:italic;
+      text-align:center;
+    }
+
+    .bottom-graphic{
+      margin-top:8px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .bottom-circle{
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      border:3px solid #efcfaa;
+      background:#fff;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .bottom-circle img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .cart h3{
+      font-size:16px;
+      margin-bottom:6px;
+      color:#7b2f2f;
     }
     .cart-empty{
       font-size:13px;
@@ -203,12 +259,6 @@
       font-size:14px;
       text-align:right;
       color:#7b2f2f;
-    }
-    .note{
-      font-size:11px;
-      margin-top:8px;
-      line-height:1.4;
-      color:#7a5f44;
     }
     label{
       font-size:13px;
@@ -243,6 +293,12 @@
       cursor:not-allowed;
       box-shadow:none;
     }
+    .note{
+      font-size:11px;
+      margin-top:8px;
+      line-height:1.4;
+      color:#7a5f44;
+    }
     .footer{
       text-align:center;
       margin-top:10px;
@@ -251,37 +307,79 @@
       line-height:1.5;
     }
     .footer-highlights{
-      margin-bottom:4px;
+      margin-bottom:2px;
       font-size:12px;
       color:#6a4c32;
     }
     .footer-free{
       margin-top:2px;
       font-weight:600;
-      color:#7b2f2f;
+      color:#0e7c3b;
       font-size:12px;
     }
-    @media(max-width:720px){
+    @media(max-width:900px){
       .layout{flex-direction:column;}
-      .products{border-right:none;border-bottom:1px dashed #f0d3a5;padding-right:0;padding-bottom:10px;}
-      .item{flex-direction:column;align-items:flex-start;}
-      .item-controls{width:100%;justify-content:space-between;}
-      .item-price{text-align:left;}
+      .menu-section{border-right:none;border-bottom:2px solid #37251a;padding-right:0;padding-bottom:10px;}
     }
   </style>
 </head>
 <body>
 <div class="app">
+
+  <!-- decorative leaves: replace src -->
+  <img src="leaf-left.png" class="leaf-left" alt="" />
+  <img src="leaf-right.png" class="leaf-right" alt="" />
+
   <header>
-    <img src="logo.png" alt="Poornathreya Ruchulu logo" class="logo">
     <h1>Poornathreya Ruchulu</h1>
-    <div class="tagline">Authentic Brahmin Home Foods</div>
-    <div class="subtag"> సాత్విక బ్రాహ్మణ ఇంటి రుచులు </div>
+    <div class="logo-block">
+      <div class="logo-round">
+        <img src="logo.png" alt="Logo" />
+      </div>
+      <div class="brand-text">AUTHENTIC BRAHMIN HOME FOODS</div>
+    </div>
   </header>
 
   <div class="layout">
-    <div class="products" id="productList"></div>
+    <!-- LEFT: menu design -->
+    <section class="menu-section">
+      <div class="top-pics">
+        <div class="circle-pic">
+          <img src="vada.png" alt="Vadiyalu" />
+        </div>
+        <div class="circle-pic">
+          <img src="pickle.png" alt="Pachadi" />
+        </div>
+      </div>
 
+      <div class="columns">
+        <!-- Vadiyalu -->
+        <div class="section-block" id="col-vadiyalu">
+          <div class="section-title">వడియాలు</div>
+          <!-- items injected by JS -->
+        </div>
+
+        <!-- Pachallu + Podulu -->
+        <div class="section-block" id="col-pach-podi">
+          <div class="section-title pachallu">పచ్చళ్ళు</div>
+          <div id="pachallu-list"></div>
+
+          <div class="section-title podulu" style="margin-top:10px;">పొడులు</div>
+          <div id="podi-list"></div>
+          <div class="podi-note">
+            పొడి ఐటంలు మీ రుచికి అనుగుణంగా కస్టమైజ్ చేయగలము.
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-graphic">
+        <div class="bottom-circle">
+          <img src="podi.png" alt="Podi" />
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: cart -->
     <aside class="cart">
       <h3>Your Order</h3>
       <div id="cartItems" class="cart-empty">
@@ -290,10 +388,10 @@
       <div id="cartTotal" class="cart-total"></div>
 
       <label for="custName">Your Name</label>
-      <input id="custName" placeholder="e.g. Lakshmi">
+      <input id="custName" placeholder="e.g. Lakshmi" />
 
       <label for="custArea">Area / Address (short)</label>
-      <input id="custArea" placeholder="e.g. Miyapur, Hyderabad">
+      <input id="custArea" placeholder="e.g. Miyapur, Hyderabad" />
 
       <label for="custNotes">Note (delivery time, special instructions)</label>
       <textarea id="custNotes" placeholder="e.g. Need by Sunday, before lunch"></textarea>
@@ -324,248 +422,236 @@
 </div>
 
 <script>
-  // basePrice is 1kg price for all types
-  const PRODUCTS = [
-    {
-      category:"Vadiyalu",
-      type:"vadiyalu",
-      items:[
-        {id:"gummadi",name:"Gummadi vadiyalu",basePrice:950,bestSeller:true},
-        {id:"chitti_minapa",name:"Chitti vadiyalu (Minapa)",basePrice:800},
-        {id:"saggu",name:"Saggu Biyyam vadiyalu",basePrice:280},
-        {id:"tomato_saggu",name:"Tomato Saggu Biyyam vadiyalu",basePrice:320,bestSeller:true},
-        {id:"ravva",name:"Ravva vadiyalu",basePrice:200},
-        {id:"pyaala",name:"Pyaalala vadiyalu",basePrice:450},
-        {id:"telaga",name:"Telaga Pindi vadiyalu",basePrice:320},
-        {id:"chitti_biyyam",name:"Chitti vadiyalu (Biyyam)",basePrice:350},
-        {id:"challa_mirapakayalu",name:"Challa Mirapakayalu",basePrice:200}
-      ]
-    },
-    {
-      category:"Pachallu",
-      type:"pachallu",
-      items:[
-        {id:"avakaya",name:"Avakaya",basePrice:400},
-        {id:"bellam_avakaya",name:"Bellam Avakaya",basePrice:530,bestSeller:true},
-        {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400},
-        {id:"pandu_mirchi",name:"Pandu Mirchi Pachadi",basePrice:400},
-        {id:"gongura_pachadi",name:"Gongura Pachadi",basePrice:750,bestSeller:true},
-        {id:"usirikaya_pachadi",name:"Usirikaya Pachadi",basePrice:800}
-      ]
-    },
-    {
-      category:"Podi Varieties",
-      type:"podi",
-      items:[
-        {id:"kandi",name:"Kandi Podi",basePrice:350,bestSeller:true},
-        {id:"nuvvula",name:"Nuvvula Podi",basePrice:550,bestSeller:true},
-        {id:"masala_podi",name:"Masala Podi",basePrice:400},
-        {id:"idli_podi",name:"Idli Podi",basePrice:500},
-        {id:"sambar_podi",name:"Sambar Podi",basePrice:400},
-        {id:"ragi_podi",name:"Ragi Podi",basePrice:140,bestSeller:true},
-        {id:"rasam_podi",name:"Rasam Podi",basePrice:500},
-        {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:1000,bestSeller:true},
-        {id:"velluli_karam",name:"Velluli Karam",basePrice:5000},
-        {id:"nelluri_karam",name:"Nelluri Karam",basePrice:1000}
-      ],
-      podiNote: "Podi items can be customized as per your taste (spice level, salt, oil)."
-    }
-  ];
-
-  const SIZES = {
+  // basePrice: 1kg price (except items whose unit is already in name)
+  const DATA = {
     vadiyalu: [
-      {code:"500g", label:"500g"},
-      {code:"1kg", label:"1kg"}
+      {id:"gummadi", name:"గుమ్మడి వడియాలు (1 కిలో)", basePrice:950, best:true},
+      {id:"chitti_minapa", name:"చిన్ని వడియాలు (మినప) (1 కిలో)", basePrice:800},
+      {id:"saggu", name:"సాగగుయ్యంవడియాలు (1 కిలో)", basePrice:280},
+      {id:"tomato_saggu", name:"టమాటో సాగ్గు బయ్యం వడియాలు (1 కిలో)", basePrice:320, best:true},
+      {id:"ravva", name:"రవ్వ వడియాలు (1 కిలో)", basePrice:200},
+      {id:"pyaala", name:"ప్యాలాల వడియాలు (1 కిలో)", basePrice:450},
+      {id:"telaga", name:"తెలగ పిండి వడియాలు (1 కిలో)", basePrice:320},
+      {id:"chitti_biyyam", name:"చిన్న వడియాలు (బియ్యం) (1 కిలో)", basePrice:350},
+      {id:"challa_mirapakayalu", name:"చళ్ళ మిరపకాయలు (100 గ్రాములు)", basePrice:200, fixed:true}
     ],
     pachallu: [
-      {code:"500g", label:"500g"},
-      {code:"1kg", label:"1kg"}
+      {id:"avakaya", name:"ఆవకాయ (1 కిలో)", basePrice:400},
+      {id:"bellam_avakaya", name:"బెల్లం ఆవకాయ (1 కిలో)", basePrice:530, best:true},
+      {id:"tomato_pachadi", name:"టమోటో పచ్చడి (1 కిలో)", basePrice:400},
+      {id:"pandu_mirchi", name:"పండు మిరపకాయ పచ్చడి (1 కిలో)", basePrice:400}
     ],
     podi: [
-      {code:"500g", label:"500g"},
-      {code:"1kg", label:"1kg"}
+      {id:"kandi", name:"కందిపొడి (1 కిలో)", basePrice:350, best:true},
+      {id:"nuvvula", name:"నువ్వుల పొడి (1 కిలో)", basePrice:550, best:true},
+      {id:"masala_podi", name:"మసాలా పొడి (200 గ్రాములు)", basePrice:80, fixed:true},
+      {id:"idli_podi", name:"ఇడ్లీ పొడి (100 గ్రాములు)", basePrice:50, fixed:true},
+      {id:"sambar_podi", name:"సాంబార్ పొడి (100 గ్రాములు)", basePrice:40, fixed:true},
+      {id:"ragi_podi", name:"రాగి పొడి (500 గ్రాములు)", basePrice:70, fixed:true, best:true},
+      {id:"rasam_podi", name:"రసం పొడి (100 గ్రాములు)", basePrice:50, fixed:true}
     ]
   };
 
-  const cart = {}; // key: itemId_sizeCode
+  const SIZES = {
+    vadiyalu: [
+      {code:"1kg", label:"1kg"},
+      {code:"500g", label:"500g"}
+    ],
+    pachallu: [
+      {code:"1kg", label:"1kg"},
+      {code:"500g", label:"500g"}
+    ],
+    podi: [
+      {code:"1kg", label:"1kg"},
+      {code:"500g", label:"500g"}
+    ]
+  };
 
-  function calcPrice(groupType, basePrice, sizeCode){
-    if(sizeCode === "1kg") return basePrice;
-    if(sizeCode === "500g") return Math.round(basePrice / 2);
-    return basePrice;
+  const cart = {}; // key: id_size
+
+  function calcPrice(category, item, sizeCode){
+    if(item.fixed){       // items already priced per 100g/200g/500g
+      return item.basePrice;
+    }
+    if(sizeCode === "1kg") return item.basePrice;
+    if(sizeCode === "500g") return Math.round(item.basePrice / 2);
+    return item.basePrice;
   }
 
-  function renderProducts(){
-    const container = document.getElementById('productList');
-    container.innerHTML = '';
-    PRODUCTS.forEach(group => {
-      const catDiv = document.createElement('div');
-      catDiv.className = 'category';
-      catDiv.innerHTML = `<h2>${group.category} <span>Homemade</span></h2>`;
-      const sizes = SIZES[group.type];
+  function renderMenu(){
+    const vCol = document.getElementById("col-vadiyalu");
+    const pachList = document.getElementById("pachallu-list");
+    const podiList = document.getElementById("podi-list");
 
-      group.items.forEach(item => {
-        const defaultSize = sizes[0].code;
-        const price = calcPrice(group.type, item.basePrice, defaultSize);
+    // Vadiyalu
+    DATA.vadiyalu.forEach(item => {
+      const row = buildItemRow("vadiyalu", item);
+      vCol.appendChild(row);
+    });
 
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'item';
+    // Pachallu
+    DATA.pachallu.forEach(item => {
+      const row = buildItemRow("pachallu", item);
+      pachList.appendChild(row);
+    });
 
-        const mainDiv = document.createElement('div');
-        mainDiv.className = 'item-main';
-
-        const best = item.bestSeller
-          ? '<span class="best-seller-badge">Best seller</span>'
-          : '';
-
-        mainDiv.innerHTML = `
-          <div class="item-name">
-            ${item.name} ${best}
-          </div>
-        `;
-
-        const controlsDiv = document.createElement('div');
-        controlsDiv.className = 'item-controls';
-
-        const sizeSelect = document.createElement('select');
-        sizeSelect.className = 'size-select';
-        sizeSelect.id = `size-${item.id}`;
-        sizes.forEach(s => {
-          const opt = document.createElement('option');
-          opt.value = s.code;
-          opt.textContent = s.label;
-          sizeSelect.appendChild(opt);
-        });
-
-        const priceDiv = document.createElement('div');
-        priceDiv.className = 'item-price';
-        priceDiv.id = `price-${item.id}`;
-        priceDiv.textContent = `₹ ${price}`;
-
-        sizeSelect.addEventListener('change', () => {
-          const newSize = sizeSelect.value;
-          const newPrice = calcPrice(group.type, item.basePrice, newSize);
-          priceDiv.textContent = `₹ ${newPrice}`;
-        });
-
-        const qtyDiv = document.createElement('div');
-        qtyDiv.className = 'qty-controls';
-        qtyDiv.innerHTML = `
-          <button type="button" onclick="updateQty('${group.type}','${item.id}',-1)">−</button>
-          <span id="qty-${item.id}">0</span>
-          <button type="button" onclick="updateQty('${group.type}','${item.id}',1)">+</button>
-        `;
-
-        controlsDiv.appendChild(sizeSelect);
-        controlsDiv.appendChild(priceDiv);
-        controlsDiv.appendChild(qtyDiv);
-
-        itemDiv.appendChild(mainDiv);
-        itemDiv.appendChild(controlsDiv);
-
-        catDiv.appendChild(itemDiv);
-      });
-
-      // add podi customization note at end of podi section
-      if(group.type === "podi" && group.podiNote){
-        const noteDiv = document.createElement('div');
-        noteDiv.className = 'podi-note';
-        noteDiv.textContent = group.podiNote;
-        catDiv.appendChild(noteDiv);
-      }
-
-      container.appendChild(catDiv);
+    // Podi
+    DATA.podi.forEach(item => {
+      const row = buildItemRow("podi", item);
+      podiList.appendChild(row);
     });
   }
 
-  function updateQty(groupType, id, delta){
-    const sizeSelect = document.getElementById('size-' + id);
-    const sizeCode = sizeSelect ? sizeSelect.value : '';
-    if(!sizeCode) return;
+  function buildItemRow(category, item){
+    const sizes = SIZES[category];
+    const defaultSize = sizes[0].code;
 
-    const allItems = PRODUCTS.flatMap(g => g.items.map(it => ({...it, type:g.type})));
-    const item = allItems.find(i => i.id === id);
+    const row = document.createElement("div");
+    row.className = "item-row";
+
+    const left = document.createElement("div");
+    left.className = "item-name";
+
+    const best = item.best ? '<span class="best-seller-badge">Best seller</span>' : "";
+    left.innerHTML = `${item.name} ${best}`;
+
+    const right = document.createElement("div");
+    right.className = "item-right";
+
+    const priceEl = document.createElement("div");
+    priceEl.className = "item-price";
+    priceEl.id = `price-${item.id}`;
+    priceEl.textContent = "₹ " + calcPrice(category, item, defaultSize) + "/-";
+
+    right.appendChild(priceEl);
+
+    if(!item.fixed){ // size selector only where applicable
+      const sizeSel = document.createElement("select");
+      sizeSel.className = "size-select";
+      sizeSel.id = `size-${item.id}`;
+      sizes.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.code;
+        opt.textContent = s.label;
+        sizeSel.appendChild(opt);
+      });
+      sizeSel.addEventListener("change", () => {
+        const newSize = sizeSel.value;
+        const newPrice = calcPrice(category, item, newSize);
+        priceEl.textContent = "₹ " + newPrice + "/-";
+      });
+      right.appendChild(sizeSel);
+    }
+
+    const qtyDiv = document.createElement("div");
+    qtyDiv.className = "qty-controls";
+    qtyDiv.innerHTML = `
+      <button type="button" onclick="updateQty('${category}','${item.id}',-1)">−</button>
+      <span id="qty-${item.id}">0</span>
+      <button type="button" onclick="updateQty('${category}','${item.id}',1)">+</button>
+    `;
+    right.appendChild(qtyDiv);
+
+    row.appendChild(left);
+    row.appendChild(right);
+    return row;
+  }
+
+  function updateQty(category, id, delta){
+    const allItems = {...DATA.vadiyalu.reduce((m,i)=>({...m,[i.id]:i}),{}),
+                      ...DATA.pachallu.reduce((m,i)=>({...m,[i.id]:i}),{}),
+                      ...DATA.podi.reduce((m,i)=>({...m,[i.id]:i}),{})};
+    const item = allItems[id];
     if(!item) return;
 
-    const key = id + '_' + sizeCode;
+    let sizeCode = "1kg";
+    const sel = document.getElementById("size-" + id);
+    if(sel && !item.fixed) sizeCode = sel.value;
+
+    const key = id + "_" + sizeCode;
     const current = cart[key]?.qty || 0;
     let next = current + delta;
     if(next < 0) next = 0;
 
-    const unitPrice = calcPrice(groupType, item.basePrice, sizeCode);
+    const unitPrice = calcPrice(category, item, sizeCode);
 
     if(next === 0){
       delete cart[key];
     } else {
       cart[key] = {
-        id:item.id,
-        name:item.name,
-        size:sizeCode,
-        unitPrice:unitPrice,
-        qty:next
+        id,
+        name: item.name,
+        size: item.fixed ? "" : sizeCode,
+        unitPrice,
+        qty: next
       };
     }
 
     const totalQtyForItem = Object.values(cart)
       .filter(c => c.id === id)
-      .reduce((sum,c) => sum + c.qty, 0);
+      .reduce((sum,c)=>sum+c.qty,0);
 
-    document.getElementById('qty-' + id).textContent = totalQtyForItem;
+    document.getElementById("qty-" + id).textContent = totalQtyForItem;
     renderCart();
   }
 
   function renderCart(){
-    const listDiv = document.getElementById('cartItems');
-    const totalDiv = document.getElementById('cartTotal');
-    const orderBtn = document.getElementById('orderBtn');
+    const listDiv = document.getElementById("cartItems");
+    const totalDiv = document.getElementById("cartTotal");
+    const orderBtn = document.getElementById("orderBtn");
     const entries = Object.values(cart);
+
     if(entries.length === 0){
-      listDiv.className = 'cart-empty';
-      listDiv.textContent = 'Select items from the menu to add to your order.';
-      totalDiv.textContent = '';
+      listDiv.className = "cart-empty";
+      listDiv.textContent = "Select items from the menu to add to your order.";
+      totalDiv.textContent = "";
       orderBtn.disabled = true;
       return;
     }
-    listDiv.className = '';
-    listDiv.innerHTML = '';
+
+    listDiv.className = "";
+    listDiv.innerHTML = "";
     let total = 0;
     entries.forEach(item => {
-      const line = document.createElement('div');
-      line.className = 'cart-item';
       const sub = item.unitPrice * item.qty;
       total += sub;
+      const line = document.createElement("div");
+      line.className = "cart-item";
+      const sizeLabel = item.size ? ` (${item.size})` : "";
       line.innerHTML = `
-        <span>${item.name} (${item.size}) × ${item.qty}</span>
-        <span>₹ ${sub}</span>`;
+        <span>${item.name}${sizeLabel} × ${item.qty}</span>
+        <span>₹ ${sub}</span>
+      `;
       listDiv.appendChild(line);
     });
-    totalDiv.textContent = 'Approx total: ₹ ' + total;
+    totalDiv.textContent = "Approx total: ₹ " + total;
     orderBtn.disabled = false;
   }
 
   function buildWhatsappMessage(){
     const entries = Object.values(cart);
-    let msg = 'Poornathreya Ruchulu order:%0A%0A';
+    let msg = "Poornathreya Ruchulu order:%0A%0A";
     entries.forEach(item => {
       const sub = item.unitPrice * item.qty;
-      msg += `• ${item.name} (${item.size}) × ${item.qty} = ₹ ${sub}%0A`;
+      const sizeLabel = item.size ? ` (${item.size})` : "";
+      msg += `• ${item.name}${sizeLabel} × ${item.qty} = ₹ ${sub}%0A`;
     });
-    const name = encodeURIComponent(document.getElementById('custName').value.trim());
-    const area = encodeURIComponent(document.getElementById('custArea').value.trim());
-    const notes = encodeURIComponent(document.getElementById('custNotes').value.trim());
-    msg += '%0AName: ' + (name || '-');
-    msg += '%0AArea: ' + (area || '-');
-    msg += '%0ANote: ' + (notes || '-');
-    msg += '%0A%0A(Please confirm availability, packing & delivery charges. Free delivery above ₹ 500/-.)';
+    const name = encodeURIComponent(document.getElementById("custName").value.trim());
+    const area = encodeURIComponent(document.getElementById("custArea").value.trim());
+    const notes = encodeURIComponent(document.getElementById("custNotes").value.trim());
+    msg += "%0AName: " + (name || "-");
+    msg += "%0AArea: " + (area || "-");
+    msg += "%0ANote: " + (notes || "-");
+    msg += "%0A%0A(Please confirm availability, packing & delivery charges. Free delivery above ₹ 500/-.)";
     return msg;
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    renderProducts();
-    document.getElementById('orderBtn').addEventListener('click', () => {
-      const phone = '918247788159';  // +91 8247788159
+  document.addEventListener("DOMContentLoaded", () => {
+    renderMenu();
+    document.getElementById("orderBtn").addEventListener("click", () => {
+      const phone = "918247788159"; // +91 8247788159
       const text = buildWhatsappMessage();
-      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+      window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
     });
   });
 </script>
