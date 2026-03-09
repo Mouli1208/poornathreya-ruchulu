@@ -179,6 +179,12 @@
       text-transform:uppercase;
       letter-spacing:0.5px;
     }
+    .podi-note{
+      font-size:12px;
+      color:#6a4c32;
+      margin-top:6px;
+      font-style:italic;
+    }
     .cart-empty{
       font-size:13px;
       color:#8c7256;
@@ -242,6 +248,18 @@
       margin-top:10px;
       font-size:11px;
       color:#8c7256;
+      line-height:1.5;
+    }
+    .footer-highlights{
+      margin-bottom:4px;
+      font-size:12px;
+      color:#6a4c32;
+    }
+    .footer-free{
+      margin-top:2px;
+      font-weight:600;
+      color:#7b2f2f;
+      font-size:12px;
     }
     @media(max-width:720px){
       .layout{flex-direction:column;}
@@ -293,7 +311,15 @@
   </div>
 
   <div class="footer">
-    © Poornathreya Ruchulu – Homemade sattvic vadiyalu, pachallu & podulu.
+    <div class="footer-highlights">
+      Homemade · No preservatives · Prepared in traditional Brahmin kitchen · Freshly made after order
+    </div>
+    <div class="footer-free">
+      Free delivery on orders above ₹ 500/-
+    </div>
+    <div style="margin-top:4px;">
+      © Poornathreya Ruchulu – Homemade sattvic vadiyalu, pachallu & podulu.
+    </div>
   </div>
 </div>
 
@@ -331,8 +357,8 @@
       category:"Podi Varieties",
       type:"podi",
       items:[
-        {id:"kandi",name:"Kandi Podi",basePrice:350,bestSeller:true},      // 1kg
-        {id:"nuvvula",name:"Nuvvula Podi",basePrice:550,bestSeller:true},  // 1kg
+        {id:"kandi",name:"Kandi Podi",basePrice:350,bestSeller:true},
+        {id:"nuvvula",name:"Nuvvula Podi",basePrice:550,bestSeller:true},
         {id:"masala_podi",name:"Masala Podi",basePrice:400},
         {id:"idli_podi",name:"Idli Podi",basePrice:500},
         {id:"sambar_podi",name:"Sambar Podi",basePrice:400},
@@ -341,7 +367,8 @@
         {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:1000,bestSeller:true},
         {id:"velluli_karam",name:"Velluli Karam",basePrice:5000},
         {id:"nelluri_karam",name:"Nelluri Karam",basePrice:1000}
-      ]
+      ],
+      podiNote: "Podi items can be customized as per your taste (spice level, salt, oil)."
     }
   ];
 
@@ -363,7 +390,6 @@
   const cart = {}; // key: itemId_sizeCode
 
   function calcPrice(groupType, basePrice, sizeCode){
-    // same logic for all types: basePrice is 1kg
     if(sizeCode === "1kg") return basePrice;
     if(sizeCode === "500g") return Math.round(basePrice / 2);
     return basePrice;
@@ -439,6 +465,15 @@
 
         catDiv.appendChild(itemDiv);
       });
+
+      // add podi customization note at end of podi section
+      if(group.type === "podi" && group.podiNote){
+        const noteDiv = document.createElement('div');
+        noteDiv.className = 'podi-note';
+        noteDiv.textContent = group.podiNote;
+        catDiv.appendChild(noteDiv);
+      }
+
       container.appendChild(catDiv);
     });
   }
@@ -521,7 +556,7 @@
     msg += '%0AName: ' + (name || '-');
     msg += '%0AArea: ' + (area || '-');
     msg += '%0ANote: ' + (notes || '-');
-    msg += '%0A%0A(Please confirm availability, packing & delivery charges.)';
+    msg += '%0A%0A(Please confirm availability, packing & delivery charges. Free delivery above ₹ 500/-.)';
     return msg;
   }
 
