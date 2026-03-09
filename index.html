@@ -333,12 +333,12 @@
       category:"Podi Varieties",
       type:"podi",
       items:[
-        {id:"kandi",name:"Kandi Podi",basePrice:35,bestSeller:true},        // ~₹350/kg
-        {id:"nuvvula",name:"Nuvvula Podi",basePrice:55,bestSeller:true},    // ~₹550/kg
+        {id:"kandi",name:"Kandi Podi",basePrice:35,bestSeller:true},
+        {id:"nuvvula",name:"Nuvvula Podi",basePrice:55,bestSeller:true},
         {id:"masala_podi",name:"Masala Podi",basePrice:40},
         {id:"idli_podi",name:"Idli Podi",basePrice:50},
         {id:"sambar_podi",name:"Sambar Podi",basePrice:40},
-        {id:"ragi_podi",name:"Ragi Podi",basePrice:14,bestSeller:true},    // 500g 70 => 100g 14
+        {id:"ragi_podi",name:"Ragi Podi",basePrice:14,bestSeller:true},
         {id:"rasam_podi",name:"Rasam Podi",basePrice:50},
         {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:100,bestSeller:true},
         {id:"velluli_karam",name:"Velluli Karam",basePrice:500},
@@ -527,7 +527,7 @@
   function buildWhatsappMessage(){
     const entries = Object.values(cart);
     let msg = 'Poornathreya Ruchulu order:%0A%0A';
-    entries.forEach	item => {
+    entries.forEach(item => {
       const sub = item.unitPrice * item.qty;
       msg += `• ${item.name} (${item.size}) × ${item.qty} = ₹ ${sub}%0A`;
     });
