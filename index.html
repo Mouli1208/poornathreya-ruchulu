@@ -347,7 +347,7 @@
       items:[
         {id:"avakaya",name:"Avakaya",basePrice:400},
         {id:"bellam_avakaya",name:"Bellam Avakaya",basePrice:530,bestSeller:true},
-        {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400},
+        {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400,bestSeller:true},
         {id:"pandu_mirchi",name:"Pandu Mirchi Pachadi",basePrice:400},
         {id:"gongura_pachadi",name:"Gongura Pachadi",basePrice:750,bestSeller:true},
         {id:"usirikaya_pachadi",name:"Usirikaya Pachadi",basePrice:800}
@@ -365,8 +365,8 @@
         {id:"ragi_podi",name:"Ragi Podi",basePrice:140,bestSeller:true},
         {id:"rasam_podi",name:"Rasam Podi",basePrice:500},
         {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:1000,bestSeller:true},
-        {id:"velluli_karam",name:"Velluli Karam",basePrice:5000},
-        {id:"nelluri_karam",name:"Nelluri Karam",basePrice:1000}
+        {id:"velluli_karam",name:"Velluli Karam",basePrice:500},
+        {id:"nelluri_karam",name:"Nalleru Karam",basePrice:100}
       ],
       podiNote: "Podi items can be customized as per your taste (spice level, salt, oil)."
     }
@@ -374,15 +374,15 @@
 
   const SIZES = {
     vadiyalu: [
-      {code:"500g", label:"500g"},
+      {code:"1/2kg", label:"1/2kg"},
       {code:"1kg", label:"1kg"}
     ],
     pachallu: [
-      {code:"500g", label:"500g"},
+      {code:"1/2kg", label:"1/2kg"},
       {code:"1kg", label:"1kg"}
     ],
     podi: [
-      {code:"500g", label:"500g"},
+      {code:"1/2kg", label:"1/2kg"},
       {code:"1kg", label:"1kg"}
     ]
   };
@@ -391,7 +391,7 @@
 
   function calcPrice(groupType, basePrice, sizeCode){
     if(sizeCode === "1kg") return basePrice;
-    if(sizeCode === "500g") return Math.round(basePrice / 2);
+    if(sizeCode === "1/2kg") return Math.round(basePrice / 2);
     return basePrice;
   }
 
