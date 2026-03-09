@@ -87,13 +87,10 @@
       overflow:auto;
       position:relative;
     }
-    .cart::before{
-      content:"";
-      position:absolute;
-      top:10px;
-      right:12px;
-      font-size:18px;
-      opacity:0.5;
+    .cart h3{
+      font-size:16px;
+      margin-bottom:6px;
+      color:#7b2f2f;
     }
     h2{
       font-size:18px;
@@ -118,16 +115,29 @@
       padding:6px 0;
       border-bottom:1px dotted #ebdfcc;
       font-size:14px;
+      gap:8px;
+    }
+    .item-main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
     }
     .item-name{
-      flex:1;
+      font-weight:500;
+    }
+    .item-controls{
+      display:flex;
+      align-items:center;
+      gap:6px;
     }
     .item-price{
-      width:70px;
+      width:86px;
       text-align:right;
       color:#7b2f2f;
       font-weight:600;
-      margin:0 6px;
+      margin:0 4px;
+      font-size:13px;
     }
     .qty-controls{
       display:flex;
@@ -150,10 +160,12 @@
       min-width:18px;
       text-align:center;
     }
-    .cart h3{
-      font-size:16px;
-      margin-bottom:6px;
-      color:#7b2f2f;
+    .size-select{
+      padding:4px 6px;
+      font-size:12px;
+      border-radius:6px;
+      border:1px solid #d8c0a1;
+      background:#fff;
     }
     .cart-empty{
       font-size:13px;
@@ -222,13 +234,15 @@
     @media(max-width:720px){
       .layout{flex-direction:column;}
       .products{border-right:none;border-bottom:1px dashed #f0d3a5;padding-right:0;padding-bottom:10px;}
+      .item{flex-direction:column;align-items:flex-start;}
+      .item-controls{width:100%;justify-content:space-between;}
+      .item-price{text-align:left;}
     }
   </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <!-- Make sure logo.png is in same folder -->
     <img src="logo.png" alt="Poornathreya Ruchulu logo" class="logo">
     <h1>Poornathreya Ruchulu</h1>
     <div class="tagline">Authentic Brahmin Home Foods</div>
@@ -272,45 +286,91 @@
 </div>
 
 <script>
+  // type: 'vadiyalu' | 'pachallu' | 'podi'
+  // For vadiyalu, pachallu: basePrice = 1kg price
+  // For podi: basePrice = 100g price
   const PRODUCTS = [
     {
       category:"Vadiyalu",
+      type:"vadiyalu",
       items:[
-        {id:"gummadi",name:"Gummadi vadiyalu – 1kg",price:950},
-        {id:"chitti_minapa",name:"Chitti vadiyalu (Minapa) – 1kg",price:800},
-        {id:"saggu",name:"Saggu Biyyam vadiyalu – 1kg",price:280},
-        {id:"tomato_saggu",name:"Tomato Saggu Biyyam vadiyalu – 1kg",price:320},
-        {id:"ravva",name:"Ravva vadiyalu – 1kg",price:200},
-        {id:"pyaala",name:"Pyaalala vadiyalu – 1kg",price:450},
-        {id:"telaga",name:"Telaga Pindi vadiyalu – 1kg",price:320},
-        {id:"chitti_biyyam",name:"Chitti vadiyalu (Biyyam) – 1kg",price:350},
-        {id:"challa_mirapakayalu",name:"Challa Mirapakayalu – 100g",price:200}
+        {id:"gummadi",name:"Gummadi vadiyalu",basePrice:950},
+        {id:"chitti_minapa",name:"Chitti vadiyalu (Minapa)",basePrice:800},
+        {id:"saggu",name:"Saggu Biyyam vadiyalu",basePrice:280},
+        {id:"tomato_saggu",name:"Tomato Saggu Biyyam vadiyalu",basePrice:320},
+        {id:"ravva",name:"Ravva vadiyalu",basePrice:200},
+        {id:"pyaala",name:"Pyaalala vadiyalu",basePrice:450},
+        {id:"telaga",name:"Telaga Pindi vadiyalu",basePrice:320},
+        {id:"chitti_biyyam",name:"Chitti vadiyalu (Biyyam)",basePrice:350},
+        {id:"challa_mirapakayalu",name:"Challa Mirapakayalu",basePrice:200} // treat as 1kg base logically
       ]
     },
     {
       category:"Pachallu",
+      type:"pachallu",
       items:[
-        {id:"avakaya",name:"Avakaya – 1kg",price:400},
-        {id:"bellam_avakaya",name:"Bellam Avakaya – 1kg",price:530},
-        {id:"tomato_pachadi",name:"Tomato Pachadi – 1kg",price:400},
-        {id:"pandu_mirchi",name:"Pandu Mirchi Pachadi – 1kg",price:400}
+        {id:"avakaya",name:"Avakaya",basePrice:400},
+        {id:"bellam_avakaya",name:"Bellam Avakaya",basePrice:530},
+        {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400},
+        {id:"pandu_mirchi",name:"Pandu Mirchi Pachadi",basePrice:400},
+        {id:"gongura_pachadi",name:"Gongura Pachadi",basePrice:750},
+        {id:"usirikaya_pachadi",name:"Usirikaya Pachadi",basePrice:800}
       ]
     },
     {
       category:"Podi Varieties",
+      type:"podi",
       items:[
-        {id:"kandi",name:"Kandi Podi – 1kg",price:350},
-        {id:"nuvvula",name:"Nuvvula Podi – 1kg",price:550},
-        {id:"masala_podi",name:"Masala Podi – 200g",price:80},
-        {id:"idli_podi",name:"Idli Podi – 100g",price:50},
-        {id:"sambar_podi",name:"Sambar Podi – 100g",price:40},
-        {id:"ragi_podi",name:"Ragi Podi – 500g",price:70},
-        {id:"rasam_podi",name:"Rasam Podi – 100g",price:50}
+        {id:"kandi",name:"Kandi Podi",basePrice:35},          // ~₹350/kg (100g base)
+        {id:"nuvvula",name:"Nuvvula Podi",basePrice:55},      // ~₹550/kg
+        {id:"masala_podi",name:"Masala Podi",basePrice:40},   // earlier 200g 80 => 100g 40
+        {id:"idli_podi",name:"Idli Podi",basePrice:50},
+        {id:"sambar_podi",name:"Sambar Podi",basePrice:40},
+        {id:"ragi_podi",name:"Ragi Podi",basePrice:14},       // 500g 70 => 100g 14
+        {id:"rasam_podi",name:"Rasam Podi",basePrice:50},
+        {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:100},
+        {id:"velluli_karam",name:"Velluli Karam",basePrice:500},
+        {id:"nelluri_karam",name:"Nelluri Karam",basePrice:100}
       ]
     }
   ];
 
-  const cart = {};
+  const SIZES = {
+    vadiyalu: [
+      {code:"500g", label:"500g"},
+      {code:"1kg", label:"1kg"}
+    ],
+    pachallu: [
+      {code:"500g", label:"500g"},
+      {code:"1kg", label:"1kg"}
+    ],
+    podi: [
+      {code:"100g", label:"100g"},
+      {code:"250g", label:"250g"},
+      {code:"500g", label:"500g"},
+      {code:"1kg", label:"1kg"}
+    ]
+  };
+
+  const cart = {}; // key: itemId_sizeCode
+
+  function calcPrice(groupType, basePrice, sizeCode){
+    if(groupType === "vadiyalu" || groupType === "pachallu"){
+      // basePrice is 1kg
+      if(sizeCode === "1kg") return basePrice;
+      if(sizeCode === "500g") return Math.round(basePrice / 2);
+      return basePrice;
+    }
+    if(groupType === "podi"){
+      // basePrice is 100g
+      if(sizeCode === "100g") return basePrice;
+      if(sizeCode === "250g") return Math.round(basePrice * 2.5);
+      if(sizeCode === "500g") return basePrice * 5;
+      if(sizeCode === "1kg") return basePrice * 10;
+      return basePrice;
+    }
+    return basePrice;
+  }
 
   function renderProducts(){
     const container = document.getElementById('productList');
@@ -319,36 +379,100 @@
       const catDiv = document.createElement('div');
       catDiv.className = 'category';
       catDiv.innerHTML = `<h2>${group.category} <span>Homemade</span></h2>`;
+      const sizes = SIZES[group.type];
+
       group.items.forEach(item => {
+        const defaultSize = sizes[0].code;
+        const price = calcPrice(group.type, item.basePrice, defaultSize);
+
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
-        itemDiv.innerHTML = `
+
+        const mainDiv = document.createElement('div');
+        mainDiv.className = 'item-main';
+        mainDiv.innerHTML = `
           <div class="item-name">${item.name}</div>
-          <div class="item-price">₹ ${item.price}</div>
-          <div class="qty-controls">
-            <button onclick="updateQty('${item.id}',-1)">−</button>
-            <span id="qty-${item.id}">0</span>
-            <button onclick="updateQty('${item.id}',1)">+</button>
-          </div>`;
+        `;
+
+        const controlsDiv = document.createElement('div');
+        controlsDiv.className = 'item-controls';
+
+        const sizeSelect = document.createElement('select');
+        sizeSelect.className = 'size-select';
+        sizeSelect.id = `size-${item.id}`;
+        sizes.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.code;
+          opt.textContent = s.label;
+          sizeSelect.appendChild(opt);
+        });
+
+        const priceDiv = document.createElement('div');
+        priceDiv.className = 'item-price';
+        priceDiv.id = `price-${item.id}`;
+        priceDiv.textContent = `₹ ${price}`;
+
+        sizeSelect.addEventListener('change', () => {
+          const newSize = sizeSelect.value;
+          const newPrice = calcPrice(group.type, item.basePrice, newSize);
+          priceDiv.textContent = `₹ ${newPrice}`;
+        });
+
+        const qtyDiv = document.createElement('div');
+        qtyDiv.className = 'qty-controls';
+        qtyDiv.innerHTML = `
+          <button type="button" onclick="updateQty('${group.type}','${item.id}',-1)">−</button>
+          <span id="qty-${item.id}">0</span>
+          <button type="button" onclick="updateQty('${group.type}','${item.id}',1)">+</button>
+        `;
+
+        controlsDiv.appendChild(sizeSelect);
+        controlsDiv.appendChild(priceDiv);
+        controlsDiv.appendChild(qtyDiv);
+
+        itemDiv.appendChild(mainDiv);
+        itemDiv.appendChild(controlsDiv);
+
         catDiv.appendChild(itemDiv);
       });
       container.appendChild(catDiv);
     });
   }
 
-  function updateQty(id, delta){
-    const allItems = PRODUCTS.flatMap(g => g.items);
+  function updateQty(groupType, id, delta){
+    const sizeSelect = document.getElementById('size-' + id);
+    const sizeCode = sizeSelect ? sizeSelect.value : '';
+    if(!sizeCode) return;
+
+    const allItems = PRODUCTS.flatMap(g => g.items.map(it => ({...it, type:g.type})));
     const item = allItems.find(i => i.id === id);
     if(!item) return;
-    const current = cart[id]?.qty || 0;
+
+    const key = id + '_' + sizeCode;
+    const current = cart[key]?.qty || 0;
     let next = current + delta;
     if(next < 0) next = 0;
+
+    const unitPrice = calcPrice(groupType, item.basePrice, sizeCode);
+
     if(next === 0){
-      delete cart[id];
+      delete cart[key];
     } else {
-      cart[id] = {...item, qty: next};
+      cart[key] = {
+        id:item.id,
+        name:item.name,
+        size:sizeCode,
+        unitPrice:unitPrice,
+        qty:next
+      };
     }
-    document.getElementById('qty-' + id).textContent = next;
+
+    // For display, total qty across all sizes for this item
+    const totalQtyForItem = Object.values(cart)
+      .filter(c => c.id === id)
+      .reduce((sum,c) => sum + c.qty, 0);
+
+    document.getElementById('qty-' + id).textContent = totalQtyForItem;
     renderCart();
   }
 
@@ -370,10 +494,10 @@
     entries.forEach(item => {
       const line = document.createElement('div');
       line.className = 'cart-item';
-      const sub = item.price * item.qty;
+      const sub = item.unitPrice * item.qty;
       total += sub;
       line.innerHTML = `
-        <span>${item.name} × ${item.qty}</span>
+        <span>${item.name} (${item.size}) × ${item.qty}</span>
         <span>₹ ${sub}</span>`;
       listDiv.appendChild(line);
     });
@@ -385,7 +509,8 @@
     const entries = Object.values(cart);
     let msg = 'Poornathreya Ruchulu order:%0A%0A';
     entries.forEach(item => {
-      msg += `• ${item.name} × ${item.qty} = ₹ ${item.price * item.qty}%0A`;
+      const sub = item.unitPrice * item.qty;
+      msg += `• ${item.name} (${item.size}) × ${item.qty} = ₹ ${sub}%0A`;
     });
     const name = encodeURIComponent(document.getElementById('custName').value.trim());
     const area = encodeURIComponent(document.getElementById('custArea').value.trim());
