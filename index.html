@@ -167,6 +167,18 @@
       border:1px solid #d8c0a1;
       background:#fff;
     }
+    .best-seller-badge{
+      display:inline-block;
+      margin-left:6px;
+      padding:2px 6px;
+      border-radius:999px;
+      background:#f9e1a5;
+      color:#7b2f2f;
+      font-size:10px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
     .cart-empty{
       font-size:13px;
       color:#8c7256;
@@ -294,15 +306,15 @@
       category:"Vadiyalu",
       type:"vadiyalu",
       items:[
-        {id:"gummadi",name:"Gummadi vadiyalu",basePrice:950},
+        {id:"gummadi",name:"Gummadi vadiyalu",basePrice:950,bestSeller:true},
         {id:"chitti_minapa",name:"Chitti vadiyalu (Minapa)",basePrice:800},
         {id:"saggu",name:"Saggu Biyyam vadiyalu",basePrice:280},
-        {id:"tomato_saggu",name:"Tomato Saggu Biyyam vadiyalu",basePrice:320},
+        {id:"tomato_saggu",name:"Tomato Saggu Biyyam vadiyalu",basePrice:320,bestSeller:true},
         {id:"ravva",name:"Ravva vadiyalu",basePrice:200},
         {id:"pyaala",name:"Pyaalala vadiyalu",basePrice:450},
         {id:"telaga",name:"Telaga Pindi vadiyalu",basePrice:320},
         {id:"chitti_biyyam",name:"Chitti vadiyalu (Biyyam)",basePrice:350},
-        {id:"challa_mirapakayalu",name:"Challa Mirapakayalu",basePrice:200} // treat as 1kg base logically
+        {id:"challa_mirapakayalu",name:"Challa Mirapakayalu",basePrice:200}
       ]
     },
     {
@@ -310,10 +322,10 @@
       type:"pachallu",
       items:[
         {id:"avakaya",name:"Avakaya",basePrice:400},
-        {id:"bellam_avakaya",name:"Bellam Avakaya",basePrice:530},
+        {id:"bellam_avakaya",name:"Bellam Avakaya",basePrice:530,bestSeller:true},
         {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400},
         {id:"pandu_mirchi",name:"Pandu Mirchi Pachadi",basePrice:400},
-        {id:"gongura_pachadi",name:"Gongura Pachadi",basePrice:750},
+        {id:"gongura_pachadi",name:"Gongura Pachadi",basePrice:750,bestSeller:true},
         {id:"usirikaya_pachadi",name:"Usirikaya Pachadi",basePrice:800}
       ]
     },
@@ -321,14 +333,14 @@
       category:"Podi Varieties",
       type:"podi",
       items:[
-        {id:"kandi",name:"Kandi Podi",basePrice:35},          // ~₹350/kg (100g base)
-        {id:"nuvvula",name:"Nuvvula Podi",basePrice:55},      // ~₹550/kg
-        {id:"masala_podi",name:"Masala Podi",basePrice:40},   // earlier 200g 80 => 100g 40
+        {id:"kandi",name:"Kandi Podi",basePrice:35,bestSeller:true},        // ~₹350/kg
+        {id:"nuvvula",name:"Nuvvula Podi",basePrice:55,bestSeller:true},    // ~₹550/kg
+        {id:"masala_podi",name:"Masala Podi",basePrice:40},
         {id:"idli_podi",name:"Idli Podi",basePrice:50},
         {id:"sambar_podi",name:"Sambar Podi",basePrice:40},
-        {id:"ragi_podi",name:"Ragi Podi",basePrice:14},       // 500g 70 => 100g 14
+        {id:"ragi_podi",name:"Ragi Podi",basePrice:14,bestSeller:true},    // 500g 70 => 100g 14
         {id:"rasam_podi",name:"Rasam Podi",basePrice:50},
-        {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:100},
+        {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:100,bestSeller:true},
         {id:"velluli_karam",name:"Velluli Karam",basePrice:500},
         {id:"nelluri_karam",name:"Nelluri Karam",basePrice:100}
       ]
@@ -390,8 +402,15 @@
 
         const mainDiv = document.createElement('div');
         mainDiv.className = 'item-main';
+
+        const best = item.bestSeller
+          ? '<span class="best-seller-badge">Best seller</span>'
+          : '';
+
         mainDiv.innerHTML = `
-          <div class="item-name">${item.name}</div>
+          <div class="item-name">
+            ${item.name} ${best}
+          </div>
         `;
 
         const controlsDiv = document.createElement('div');
@@ -508,7 +527,7 @@
   function buildWhatsappMessage(){
     const entries = Object.values(cart);
     let msg = 'Poornathreya Ruchulu order:%0A%0A';
-    entries.forEach(item => {
+    entries.forEach	item => {
       const sub = item.unitPrice * item.qty;
       msg += `• ${item.name} (${item.size}) × ${item.qty} = ₹ ${sub}%0A`;
     });
