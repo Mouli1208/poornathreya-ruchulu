@@ -324,7 +324,8 @@
 </div>
 
 <script>
-  // basePrice is 1kg price for all types
+  // basePrice for Vadiyalu & Pachallu: 1kg price
+  // basePrice for Podi: 1kg price, sizes: 250g, 500g, 1kg
   const PRODUCTS = [
     {
       category:"Vadiyalu",
@@ -338,7 +339,9 @@
         {id:"pyaala",name:"Pyaalala vadiyalu",basePrice:450},
         {id:"telaga",name:"Telaga Pindi vadiyalu",basePrice:320},
         {id:"chitti_biyyam",name:"Chitti vadiyalu (Biyyam)",basePrice:350},
-        {id:"challa_mirapakayalu",name:"Challa Mirapakayalu",basePrice:200}
+        // Challa Mirapakayalu 100g and 250g as two fixed items
+        {id:"challa_100",name:"Challa Mirapakayalu – 100g",basePrice:200,fixed:true},
+        {id:"challa_250",name:"Challa Mirapakayalu – 250g",basePrice:500,fixed:true}
       ]
     },
     {
@@ -347,7 +350,7 @@
       items:[
         {id:"avakaya",name:"Avakaya",basePrice:400},
         {id:"bellam_avakaya",name:"Bellam Avakaya",basePrice:530,bestSeller:true},
-        {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400,bestSeller:true},
+        {id:"tomato_pachadi",name:"Tomato Pachadi",basePrice:400},
         {id:"pandu_mirchi",name:"Pandu Mirchi Pachadi",basePrice:400},
         {id:"gongura_pachadi",name:"Gongura Pachadi",basePrice:750,bestSeller:true},
         {id:"usirikaya_pachadi",name:"Usirikaya Pachadi",basePrice:800}
@@ -365,8 +368,9 @@
         {id:"ragi_podi",name:"Ragi Podi",basePrice:140,bestSeller:true},
         {id:"rasam_podi",name:"Rasam Podi",basePrice:500},
         {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:1000,bestSeller:true},
+        // Velluli Karam: 100g = 50 => 1kg = 500
         {id:"velluli_karam",name:"Velluli Karam",basePrice:500},
-        {id:"nelluri_karam",name:"Nalleru Karam",basePrice:100}
+        {id:"nelluri_karam",name:"Nelluri Karam",basePrice:1000}
       ],
       podiNote: "Podi items can be customized as per your taste (spice level, salt, oil)."
     }
@@ -374,25 +378,40 @@
 
   const SIZES = {
     vadiyalu: [
-      {code:"1/2kg", label:"1/2kg"},
+      {code:"500g", label:"500g"},
       {code:"1kg", label:"1kg"}
     ],
     pachallu: [
-      {code:"1/2kg", label:"1/2kg"},
+      {code:"500g", label:"500g"},
       {code:"1kg", label:"1kg"}
     ],
     podi: [
-      {code:"1/2kg", label:"1/2kg"},
+      {code:"250g", label:"250g"},
+      {code:"500g", label:"500g"},
       {code:"1kg", label:"1kg"}
     ]
   };
 
-  const cart = {}; // key: itemId_sizeCode
+  const cart = {}; // key: itemId_sizeCode_or_fixed
 
-  function calcPrice(groupType, basePrice, sizeCode){
-    if(sizeCode === "1kg") return basePrice;
-    if(sizeCode === "1/2kg") return Math.round(basePrice / 2);
-    return basePrice;
+  function calcPrice(groupType, item, sizeCode){
+    if(item.fixed){
+      return item.basePrice;
+    }
+    // vadiyalu & pachallu: 1kg base, sizes 500g
+    if(groupType === "vadiyalu" || groupType === "pachallu"){
+      if(sizeCode === "1kg") return item.basePrice;
+      if(sizeCode === "500g") return Math.round(item.basePrice / 2);
+      return item.basePrice;
+    }
+    // podi: 1kg base, sizes 250g/500g/1kg
+    if(groupType === "podi"){
+      if(sizeCode === "1kg") return item.basePrice;
+      if(sizeCode === "500g") return Math.round(item.basePrice / 2);
+      if(sizeCode === "250g") return Math.round(item.basePrice / 4);
+      return item.basePrice;
+    }
+    return item.basePrice;
   }
 
   function renderProducts(){
@@ -405,9 +424,6 @@
       const sizes = SIZES[group.type];
 
       group.items.forEach(item => {
-        const defaultSize = sizes[0].code;
-        const price = calcPrice(group.type, item.basePrice, defaultSize);
-
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
 
@@ -427,37 +443,47 @@
         const controlsDiv = document.createElement('div');
         controlsDiv.className = 'item-controls';
 
-        const sizeSelect = document.createElement('select');
-        sizeSelect.className = 'size-select';
-        sizeSelect.id = `size-${item.id}`;
-        sizes.forEach(s => {
-          const opt = document.createElement('option');
-          opt.value = s.code;
-          opt.textContent = s.label;
-          sizeSelect.appendChild(opt);
-        });
+        let defaultSizeCode = '';
+        if(!item.fixed){
+          defaultSizeCode = group.type === "podi" ? "250g" : "500g";
+        }
 
         const priceDiv = document.createElement('div');
         priceDiv.className = 'item-price';
         priceDiv.id = `price-${item.id}`;
-        priceDiv.textContent = `₹ ${price}`;
+        const initialPrice = calcPrice(group.type, item, defaultSizeCode);
+        priceDiv.textContent = `₹ ${initialPrice}`;
 
-        sizeSelect.addEventListener('change', () => {
-          const newSize = sizeSelect.value;
-          const newPrice = calcPrice(group.type, item.basePrice, newSize);
-          priceDiv.textContent = `₹ ${newPrice}`;
-        });
+        let sizeSelect = null;
+        if(!item.fixed){
+          sizeSelect = document.createElement('select');
+          sizeSelect.className = 'size-select';
+          sizeSelect.id = `size-${item.id}`;
+          sizes.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.code;
+            opt.textContent = s.label;
+            if(s.code === defaultSizeCode) opt.selected = true;
+            sizeSelect.appendChild(opt);
+          });
+          sizeSelect.addEventListener('change', () => {
+            const newSize = sizeSelect.value;
+            const newPrice = calcPrice(group.type, item, newSize);
+            priceDiv.textContent = `₹ ${newPrice}`;
+          });
+          controlsDiv.appendChild(sizeSelect);
+        }
+
+        controlsDiv.appendChild(priceDiv);
 
         const qtyDiv = document.createElement('div');
         qtyDiv.className = 'qty-controls';
         qtyDiv.innerHTML = `
-          <button type="button" onclick="updateQty('${group.type}','${item.id}',-1)">−</button>
+          <button type="button" onclick="updateQty('${group.type}','${item.id}',${item.fixed ? "'fixed'" : "null"},-1)">−</button>
           <span id="qty-${item.id}">0</span>
-          <button type="button" onclick="updateQty('${group.type}','${item.id}',1)">+</button>
+          <button type="button" onclick="updateQty('${group.type}','${item.id}',${item.fixed ? "'fixed'" : "null"},1)">+</button>
         `;
 
-        controlsDiv.appendChild(sizeSelect);
-        controlsDiv.appendChild(priceDiv);
         controlsDiv.appendChild(qtyDiv);
 
         itemDiv.appendChild(mainDiv);
@@ -466,7 +492,6 @@
         catDiv.appendChild(itemDiv);
       });
 
-      // add podi customization note at end of podi section
       if(group.type === "podi" && group.podiNote){
         const noteDiv = document.createElement('div');
         noteDiv.className = 'podi-note';
@@ -478,21 +503,26 @@
     });
   }
 
-  function updateQty(groupType, id, delta){
-    const sizeSelect = document.getElementById('size-' + id);
-    const sizeCode = sizeSelect ? sizeSelect.value : '';
-    if(!sizeCode) return;
-
+  function updateQty(groupType, id, fixedFlag, delta){
     const allItems = PRODUCTS.flatMap(g => g.items.map(it => ({...it, type:g.type})));
     const item = allItems.find(i => i.id === id);
     if(!item) return;
+
+    let sizeCode = '';
+    if(item.fixed || fixedFlag === 'fixed'){
+      sizeCode = 'fixed';
+    } else {
+      const sizeSelect = document.getElementById('size-' + id);
+      sizeCode = sizeSelect ? sizeSelect.value : '';
+      if(!sizeCode) sizeCode = '1kg';
+    }
 
     const key = id + '_' + sizeCode;
     const current = cart[key]?.qty || 0;
     let next = current + delta;
     if(next < 0) next = 0;
 
-    const unitPrice = calcPrice(groupType, item.basePrice, sizeCode);
+    const unitPrice = calcPrice(groupType, item, sizeCode);
 
     if(next === 0){
       delete cart[key];
@@ -500,7 +530,7 @@
       cart[key] = {
         id:item.id,
         name:item.name,
-        size:sizeCode,
+        size:(sizeCode === 'fixed' ? '' : sizeCode),
         unitPrice:unitPrice,
         qty:next
       };
@@ -530,12 +560,13 @@
     listDiv.innerHTML = '';
     let total = 0;
     entries.forEach(item => {
-      const line = document.createElement('div');
-      line.className = 'cart-item';
       const sub = item.unitPrice * item.qty;
       total += sub;
+      const sizeLabel = item.size ? ` (${item.size})` : '';
+      const line = document.createElement('div');
+      line.className = 'cart-item';
       line.innerHTML = `
-        <span>${item.name} (${item.size}) × ${item.qty}</span>
+        <span>${item.name}${sizeLabel} × ${item.qty}</span>
         <span>₹ ${sub}</span>`;
       listDiv.appendChild(line);
     });
@@ -548,7 +579,8 @@
     let msg = 'Poornathreya Ruchulu order:%0A%0A';
     entries.forEach(item => {
       const sub = item.unitPrice * item.qty;
-      msg += `• ${item.name} (${item.size}) × ${item.qty} = ₹ ${sub}%0A`;
+      const sizeLabel = item.size ? ` (${item.size})` : '';
+      msg += `• ${item.name}${sizeLabel} × ${item.qty} = ₹ ${sub}%0A`;
     });
     const name = encodeURIComponent(document.getElementById('custName').value.trim());
     const area = encodeURIComponent(document.getElementById('custArea').value.trim());
