@@ -298,9 +298,7 @@
 </div>
 
 <script>
-  // type: 'vadiyalu' | 'pachallu' | 'podi'
-  // For vadiyalu, pachallu: basePrice = 1kg price
-  // For podi: basePrice = 100g price
+  // basePrice is 1kg price for all types
   const PRODUCTS = [
     {
       category:"Vadiyalu",
@@ -333,16 +331,16 @@
       category:"Podi Varieties",
       type:"podi",
       items:[
-        {id:"kandi",name:"Kandi Podi",basePrice:35,bestSeller:true},
-        {id:"nuvvula",name:"Nuvvula Podi",basePrice:55,bestSeller:true},
-        {id:"masala_podi",name:"Masala Podi",basePrice:40},
-        {id:"idli_podi",name:"Idli Podi",basePrice:50},
-        {id:"sambar_podi",name:"Sambar Podi",basePrice:40},
-        {id:"ragi_podi",name:"Ragi Podi",basePrice:14,bestSeller:true},
-        {id:"rasam_podi",name:"Rasam Podi",basePrice:50},
-        {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:100,bestSeller:true},
-        {id:"velluli_karam",name:"Velluli Karam",basePrice:500},
-        {id:"nelluri_karam",name:"Nelluri Karam",basePrice:100}
+        {id:"kandi",name:"Kandi Podi",basePrice:350,bestSeller:true},      // 1kg
+        {id:"nuvvula",name:"Nuvvula Podi",basePrice:550,bestSeller:true},  // 1kg
+        {id:"masala_podi",name:"Masala Podi",basePrice:400},
+        {id:"idli_podi",name:"Idli Podi",basePrice:500},
+        {id:"sambar_podi",name:"Sambar Podi",basePrice:400},
+        {id:"ragi_podi",name:"Ragi Podi",basePrice:140,bestSeller:true},
+        {id:"rasam_podi",name:"Rasam Podi",basePrice:500},
+        {id:"mulagaku_podi",name:"Mulagaku Podi",basePrice:1000,bestSeller:true},
+        {id:"velluli_karam",name:"Velluli Karam",basePrice:5000},
+        {id:"nelluri_karam",name:"Nelluri Karam",basePrice:1000}
       ]
     }
   ];
@@ -357,8 +355,6 @@
       {code:"1kg", label:"1kg"}
     ],
     podi: [
-      {code:"100g", label:"100g"},
-      {code:"250g", label:"250g"},
       {code:"500g", label:"500g"},
       {code:"1kg", label:"1kg"}
     ]
@@ -367,20 +363,9 @@
   const cart = {}; // key: itemId_sizeCode
 
   function calcPrice(groupType, basePrice, sizeCode){
-    if(groupType === "vadiyalu" || groupType === "pachallu"){
-      // basePrice is 1kg
-      if(sizeCode === "1kg") return basePrice;
-      if(sizeCode === "500g") return Math.round(basePrice / 2);
-      return basePrice;
-    }
-    if(groupType === "podi"){
-      // basePrice is 100g
-      if(sizeCode === "100g") return basePrice;
-      if(sizeCode === "250g") return Math.round(basePrice * 2.5);
-      if(sizeCode === "500g") return basePrice * 5;
-      if(sizeCode === "1kg") return basePrice * 10;
-      return basePrice;
-    }
+    // same logic for all types: basePrice is 1kg
+    if(sizeCode === "1kg") return basePrice;
+    if(sizeCode === "500g") return Math.round(basePrice / 2);
     return basePrice;
   }
 
@@ -486,7 +471,6 @@
       };
     }
 
-    // For display, total qty across all sizes for this item
     const totalQtyForItem = Object.values(cart)
       .filter(c => c.id === id)
       .reduce((sum,c) => sum + c.qty, 0);
